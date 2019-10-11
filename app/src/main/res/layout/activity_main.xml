@@ -17,6 +17,5 @@
         android:layout_height="wrap_content"
         android:id="@+id/img"
         android:src="@drawable/stones"
-        android:adjustViewBounds="true"/>
-
+        android:adjustViewBounds="false"/>
 </LinearLayout>
