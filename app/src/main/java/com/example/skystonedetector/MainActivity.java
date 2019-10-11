@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 
 import org.opencv.android.OpenCVLoader;
@@ -53,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
 
         SkyStoneImageProcessor pipeline = new SkyStoneImageProcessor();
         int stonePosition = pipeline.process(img);
-
       }
 
 
