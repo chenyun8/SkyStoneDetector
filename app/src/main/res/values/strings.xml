@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">SkyStoneDetector</string>
+    <string name="stone_position">StonePosition</string>
 </resources>

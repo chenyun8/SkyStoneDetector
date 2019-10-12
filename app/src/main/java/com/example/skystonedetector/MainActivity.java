@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import org.opencv.android.OpenCVLoader;
 import org.opencv.android.Utils;
@@ -47,12 +48,12 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        Imgproc.cvtColor(img, img, Imgproc.COLOR_RGB2BGRA);
-
+        Imgproc.cvtColor(img, img, Imgproc.COLOR_RGB2BGR);
 
         SkyStoneImageProcessor pipeline = new SkyStoneImageProcessor();
         int stonePosition = pipeline.process(img);
+
+        TextView textView = findViewById(R.id.stonePosition);
+        textView.setText("stonePosition: " + stonePosition);
       }
-
-
 }

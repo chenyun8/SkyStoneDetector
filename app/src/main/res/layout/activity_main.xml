@@ -14,6 +14,14 @@
         android:onClick="identifySkyStone"
         />
 
+    <TextView
+        android:id="@+id/stonePosition"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15pt"
+        android:gravity="center"
+        android:text="@string/stone_position" />
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
