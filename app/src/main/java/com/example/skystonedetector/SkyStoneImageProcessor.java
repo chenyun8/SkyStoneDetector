@@ -20,6 +20,10 @@ public class SkyStoneImageProcessor {
     private Mat blurOutput = new Mat();
     private Mat rgbThresholdOutput = new Mat();
     private ArrayList<MatOfPoint> findContoursOutput = new ArrayList<MatOfPoint>();
+
+    private int bignessThresh = 1500000;
+
+    private MainActivity main;
 /*
     static {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
@@ -27,8 +31,9 @@ public class SkyStoneImageProcessor {
 
  */
 
-    public SkyStoneImageProcessor()
+    public SkyStoneImageProcessor(MainActivity mainActivity)
     {
+        main = mainActivity;
     }
 
     /**
@@ -38,22 +43,71 @@ public class SkyStoneImageProcessor {
         // Step Blur0:
         Mat blurInput = source0;
         BlurType blurType = BlurType.get("Box Blur");
-        double blurRadius = 51.35135135135135;
+        double blurRadius = 52;
         blur(blurInput, blurType, blurRadius, blurOutput);
+
+        main.setImage(blurOutput);
 
         // Step RGB_Threshold0:
         Mat rgbThresholdInput = blurOutput;
-        double[] rgbThresholdRed = {149.05575539568343, 255.0};
-        double[] rgbThresholdGreen = {146.76258992805754, 255.0};
-        double[] rgbThresholdBlue = {0.0, 104.74747474747474};
-        rgbThreshold(rgbThresholdInput, rgbThresholdRed, rgbThresholdGreen, rgbThresholdBlue, rgbThresholdOutput);
+        double[] rgbThresholdRed = {195, 255.0};/*149.05575539568343*/
+        double[] rgbThresholdGreen = {0, 255.0};/*146.76258992805754*/
+        double[] rgbThresholdBlue = {0.0, 100};/*104.74747474747474*/
+        rgbThreshold(rgbThresholdInput, rgbThresholdBlue, rgbThresholdGreen, rgbThresholdRed, rgbThresholdOutput);
+
+        main.setImage(rgbThresholdOutput);
 
         // Step Find_Contours0:
         Mat findContoursInput = rgbThresholdOutput;
         boolean findContoursExternalOnly = false;
         findContours(findContoursInput, findContoursExternalOnly, findContoursOutput);
 
-        return 4;
+        double left = 0;
+        double right = 0;
+
+        System.out.println("cotours " + findContoursOutput.size());
+
+
+        if(findContoursOutput.size() == 1){
+            return 4;
+        }
+        for(int i = 0; i < findContoursOutput.size(); i++){
+            Rect r = Imgproc.boundingRect(findContoursOutput.get(i));
+            double area = r.area();
+            if(area < 300){
+                continue;
+            }
+            if(area > bignessThresh){
+                return 4;
+            }
+
+            Point center = new Point(r.x + (r.width / 2),
+                    r.y + (r.height / 2));
+
+            if(center.x <= blurInput.width()/2){
+                // it is on the left side
+                left += area;
+
+            }else{
+                //it is on the right
+                right += area;
+
+            }
+
+            System.out.println("area" + i + " " + area);
+
+        }
+
+        System.out.println("left " + left + " right " + right );
+
+        if(left > right + 10000){
+            return 6;
+        }else if(right > left + 10000){
+            return 5;
+        }else{
+            return 4;
+        }
+
 
     }
 
