@@ -74,7 +74,7 @@ public class SkyStoneImageProcessor {
         for(int i = 0; i < findContoursOutput.size(); i++){
             Rect r = Imgproc.boundingRect(findContoursOutput.get(i));
             double area = r.area();
-            if(area < 300){
+            if(area < 10000){
                 continue;
             }
             if(area > bignessThresh){
