@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         int stonePosition = pipeline.process(img);
 
         TextView textView = findViewById(R.id.stonePosition);
-        textView.setText("stonePosition: " + stonePosition);
+        String output = getResources().getString(R.string.stone_position);
+        textView.setText(output + ": " + stonePosition );
       }
 }
